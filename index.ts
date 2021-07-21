@@ -1,0 +1,1 @@
+export { SkhemataLogin as LoginComponent } from './src/SkhemataLogin.js';

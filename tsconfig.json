@@ -1,10 +1,10 @@
-  {
+{
   "compilerOptions": {
     "target": "es2018",
     "module": "esnext",
     "moduleResolution": "node",
     "noEmitOnError": true,
-    "lib": ["ESNext", "dom", "DOM.Iterable"],
+    "lib": ["es2017", "dom"],
     "strict": true,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
@@ -14,7 +14,8 @@
     "sourceMap": true,
     "inlineSources": true,
     "rootDir": "./",
-    "declaration": true
+    "declaration": true,
+    "incremental": true
   },
   "include": ["**/*.ts"]
 }

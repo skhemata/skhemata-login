@@ -1,57 +1,76 @@
-import { html, css, LitElement, property } from 'lit-element';
-import { get, registerTranslateConfig, use } from 'lit-translate';
-import { SkhemataCore } from '../skhemata-core_temp/index';
+import { html, SkhemataBase, property } from '@skhemata/skhemata-base';
+import {
+  SkhemataForm,
+  SkhemataFormTextbox,
+  SkhemataFormButton,
+} from '@skhemata/skhemata-form';
+import { translationEngDefault } from './translation/SkhemataLogin/eng';
 
-export class SkhemataLogin extends SkhemataCore {
+export class SkhemataLogin extends SkhemataBase {
+  @property({ type: String }) error = '';
 
-  constructor() {
-    super();
-    this.addEventListener('response', function(event) {
-      var customEvent = event as CustomEvent;
-      console.log(customEvent.detail);
-    });
+  @property({ type: Object })
+  translationData = {
+    eng: translationEngDefault,
+  };
+
+  private _loggedIn = false;
+
+  async firstUpdated() {
+    await super.firstUpdated();
+    this._loggedIn = true;
   }
 
-  @property({type: String})
-  errorMessage = "";
+  static get scopedElements() {
+    return {
+      'sk-form': SkhemataForm,
+      'sk-form-textbox': SkhemataFormTextbox,
+      'sk-form-button': SkhemataFormButton,
+    };
+  }
 
-  @property({type: Boolean})
-  signingIn = false;
+  async handleSubmit(e: CustomEvent) {
+    this.skhemata
+      ?.authenticate(e.detail.data)
+      .then(() => {
+        this._loggedIn = true;
+      })
+      .catch(() => {
+        this.error = 'Error logging in';
+      });
 
-  clearMessage = () => {
-    this.errorMessage = "";
+    this.requestUpdate();
+  }
+
+  async handleChange() {
+    if (this.error) {
+      this.error = '';
+    }
   }
 
   render() {
-    return html`
-    <form class="control is-family-primary is-fullwidth login-form" @submit="${this.submitForm}">
-        <div class = "field">
-          <p class = "control">
-            <label class = "label">${get('email_label')}</label>
-            <input id = "email_input" class = "input is-fullwidth" type="email" name="email"></input>
-          </p>
-        </div>
-        <div class = "field">
-          <p class = "control">
-            <label class = "label">${get('password_label')}</label>
-            <input class = "input is-fullwidth" type="password" name="password"></input>
-          </p>
-        </div>
-        <div class = "tile">
-          <p class = "control">
-            <button class = "input button is-success is-fullwidth" type="submit">${this.signingIn ? get('button_loading_label') : get('button_label')}</button>
-          </p>
-        </div>
-    </form>
-    ${
-      this.errorMessage.length > 0 
-        ? html`
-            <div class="is-family-primary notification is-danger mt-4">
-              <a class="delete" @click=${this.clearMessage}></a>
-              ${this.errorMessage}
-            </div>` 
-        : ''
-    }
-    `;
+    return this.skhemata?.api.authToken
+      ? html``
+      : html`
+          <sk-form @submit=${this.handleSubmit} @change=${this.handleChange}>
+            <sk-form-textbox
+              name="email"
+              label="${this.getStr('SkhemataLogin.email')}"
+              type="email"
+              required
+            ></sk-form-textbox>
+            <sk-form-textbox
+              name="password"
+              label="${this.getStr('SkhemataLogin.password')}"
+              type="password"
+              required
+            ></sk-form-textbox>
+            <sk-form-button
+              title="${this.getStr('SkhemataLogin.login')}"
+              type="submit"
+            ></sk-form-button>
+          </sk-form>
+          <p class="help is-danger">${this.error}</p>
+        `;
   }
 }

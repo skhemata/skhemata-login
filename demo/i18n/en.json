@@ -1,8 +1,0 @@
-{
-    "email_label": "Email *",
-    "password_label": "Password *",
-    "button_label": "Login",
-    "button_loading_label": "Logging in...",
-    "bad_login": "Incorrect email or password, please try again",
-    "unknown_error": "An unknown error occurred, please reload"
-}

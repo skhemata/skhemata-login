@@ -1,21 +1,70 @@
-# \<login-component>
+# \<skhemata-login>
 
-Skhemata Site Login Web Component. This web component provides website user login functionality. It provides optional Okta integration.
+This webcomponent follows the [open-wc](https://github.com/open-wc/open-wc) recommendation.
 
 ## Installation
 ```bash
-npm i @skhemata/skhemata-login
+npm i skhemata-login
 ```
 
 ## Usage
 ```html
 <script type="module">
-  import '@skhemata/skhemata-login/skhemata-login.js';
+  import 'skhemata-login/skhemata-login.js';
 </script>
 
 <skhemata-login></skhemata-login>
 ```
 
+## Linting with ESLint, Prettier, and Types
+To scan the project for linting errors, run
+```bash
+npm run lint
+```
+
+You can lint with ESLint and Prettier individually as well
+```bash
+npm run lint:eslint
+```
+```bash
+npm run lint:prettier
+```
+
+To automatically fix many linting errors, run
+```bash
+npm run format
+```
+
+You can format using ESLint and Prettier individually as well
+```bash
+npm run format:eslint
+```
+```bash
+npm run format:prettier
+```
+
+## Testing with Web Test Runner
+To run the suite of Web Test Runner tests, run
+```bash
+npm run test
+```
+
+To run the tests in watch mode (for &lt;abbr title=&#34;test driven development&#34;&gt;TDD&lt;/abbr&gt;, for example), run
+
+```bash
+npm run test:watch
+```
+
+## Demoing with Storybook
+To run a local instance of Storybook for your component, run
+```bash
+npm run storybook
+```
+
+To build a production version of Storybook, run
+```bash
+npm run storybook:build
+```
 
 
 ## Tooling configs

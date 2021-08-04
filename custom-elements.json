@@ -22,7 +22,7 @@
       "slots": [],
       "cssProperties": [
         {
-          "name": "--login-component-text-color",
+          "name": "--skhemata-login-text-color",
           "description": "Main Text Color",
           "type": "Color"
         }

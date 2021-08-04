@@ -2,7 +2,6 @@
 <html lang="en-GB">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
       background: #fafafa;
@@ -16,12 +15,41 @@
     import { html, render } from 'lit-html';
     import '../dist/skhemata-login.js';
 
-    const title = 'Login Demo';
+
+    const configData = {
+      oktaDomain: "https://dev-89287829.okta.com",
+      oktaClientId: "0oa1cdp0iopizneVV5d7",
+      providers: {
+        facebook: {
+          idpId: "0oa1d4rbzh0rag11W5d7"
+        },
+        google: {
+          idpId: "0oa1d4rbzh0rag11W5d7"
+        },
+        apple: {
+          idpId: "0oa1d4rbzh0rag11W5d7"
+        },
+        microsoft: {
+          idpId: "0oa1d4rbzh0rag11W5d7"
+        },
+        linkedin: {
+          idpId: "0oa1d4rbzh0rag11W5d7"
+        }
+      }
+    }
+
     render(
       html`
-        <skhemata-login translation-dir="i18n/" translation-lang="en" form-url="https://arcadia.thrinacia.com/service/restv1/authenticate">
-          
-        </skhemata-login>
+        <div style="max-width: 300px">
+          <skhemata-login
+            api="${JSON.stringify({url: 'https://localhost:3000/api/service/restv1'})}"
+          >
+          </skhemata-login>
+          <skhemata-login-okta
+            api="${JSON.stringify({url: 'http://localhost:3000/service/restv1'})}"
+            config-data="${JSON.stringify(configData)}"
+          ></skhemata-login-okta>
+        </div>
       `,
       document.querySelector('#demo')
     );

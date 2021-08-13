@@ -1,43 +1,81 @@
 {
-  "name": "login-component",
+  "name": "skhemata-login",
   "version": "0.0.0",
-  "description": "Skhemata Site Login Web Component. This web component provides website user login functionality. It provides optional Okta integration.",
-  "author": "login-component",
+  "description": "Webcomponent skhemata-login following open-wc recommendations",
+  "author": "skhemata-login",
+  "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/index.js",
-  "license": "https://raw.githubusercontent.com/skhemata/skhemata-login/master/LICENSE",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/skhemata/skhemata-login.git"
-  },
-  "keywords": [
-    "skhemata",
-    "login",
-    "web component"
-  ],
   "scripts": {
-    "start": "concurrently --kill-others --names tsc,web-dev-server \"npm run tsc:watch\" \"web-dev-server --app-index demo/index.html --node-resolve --open --watch\"",
-    "tsc:watch": "tsc --watch",
-    "prepublish": "tsc"
+    "start": "tsc && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wds\"",
+    "build": "tsc",
+    "prepublish": "tsc",
+    "lint": "eslint --ext .ts,.html . --ignore-path .gitignore && prettier \"**/*.ts\" --check --ignore-path .gitignore",
+    "format": "eslint --ext .ts,.html . --fix --ignore-path .gitignore && prettier \"**/*.ts\" --write --ignore-path .gitignore",
+    "test": "tsc && wtr --coverage",
+    "test:watch": "tsc && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wtr --watch\"",
+    "storybook": "tsc && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wds -c .storybook/server.mjs\"",
+    "storybook:build": "tsc && build-storybook"
   },
   "dependencies": {
-    "@appnest/lit-translate": "^1.1.18",
-    "@granite-elements/granite-lit-bulma": "^0.9.0-4",
-    "@types/validator": "^13.1.0",
-    "@types/validatorjs": "^3.15.0",
-    "bulma": "^0.9.1",
-    "lit-element": "^2.2.1",
-    "lit-html": "^1.1.2",
-    "lit-translate": "^1.2.1",
-    "uuid-random": "^1.3.2",
-    "validator": "^13.1.17",
-    "validatorjs": "^3.20.0"
+    "@fortawesome/fontawesome-svg-core": "^1.2.35",
+    "@fortawesome/free-brands-svg-icons": "^5.15.3",
+    "@okta/okta-auth-js": "^5.2.3",
+    "@riovir/wc-fontawesome": "^0.1.6",
+    "@skhemata/skhemata-base": "^1.2.1",
+    "@skhemata/skhemata-form": "^1.3.1",
+    "crypto-random-string": "^4.0.0",
+    "lit-html": "^2.0.0-rc.3"
   },
   "devDependencies": {
-    "@types/node": "13.11.1",
-    "@web/dev-server": "^0.0.12",
-    "typescript": "~4.0.3",
-    "concurrently": "^5.1.0",
-    "tslib": "^1.11.0"
+    "@open-wc/eslint-config": "^4.3.0",
+    "@open-wc/testing": "^2.5.33",
+    "@types/quill": "^2.0.9",
+    "@typescript-eslint/eslint-plugin": "^4.28.4",
+    "@typescript-eslint/parser": "^4.28.4",
+    "@web/dev-server": "^0.1.18",
+    "@web/dev-server-storybook": "^0.3.6",
+    "@web/test-runner": "^0.12.20",
+    "concurrently": "^5.3.0",
+    "eslint": "^7.31.0",
+    "eslint-config-prettier": "^7.2.0",
+    "husky": "^4.3.8",
+    "lint-staged": "^10.5.4",
+    "prettier": "^2.2.1",
+    "tslib": "^2.3.0",
+    "typescript": "^4.3.5"
+  },
+  "eslintConfig": {
+    "parser": "@typescript-eslint/parser",
+    "extends": [
+      "@open-wc/eslint-config",
+      "eslint-config-prettier"
+    ],
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "rules": {
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "error"
+      ],
+      "import/no-unresolved": "off",
+      "import/extensions": "off"
+    }
+  },
+  "prettier": {
+    "singleQuote": true,
+    "arrowParens": "avoid"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   }
 }

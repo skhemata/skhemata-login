@@ -14,11 +14,10 @@ export class SkhemataLogin extends SkhemataBase {
     eng: translationEngDefault,
   };
 
-  private _loggedIn = false;
+  private isLoading = false;
 
   async firstUpdated() {
     await super.firstUpdated();
-    this._loggedIn = true;
   }
 
   static get scopedElements() {
@@ -29,17 +28,17 @@ export class SkhemataLogin extends SkhemataBase {
     };
   }
 
-  async handleSubmit(e: CustomEvent) {
+  handleSubmit(e: CustomEvent) {
     this.skhemata
       ?.authenticate(e.detail.data)
       .then(() => {
-        this._loggedIn = true;
+        this.isLoading = false;
+        this.requestUpdate();
       })
       .catch(() => {
         this.error = 'Error logging in';
+        this.requestUpdate();
       });
-
-    this.requestUpdate();
   }
 
   async handleChange() {
@@ -49,6 +48,7 @@ export class SkhemataLogin extends SkhemataBase {
   }
 
   render() {
+    console.log(this.isLoading);
     return this.skhemata?.api.authToken
       ? html``
       : html`
@@ -68,6 +68,7 @@ export class SkhemataLogin extends SkhemataBase {
             <sk-form-button
               title="${this.getStr('SkhemataLogin.login')}"
               type="submit"
+              .isLoading=${this.isLoading}
             ></sk-form-button>
           </sk-form>
           <p class="help is-danger">${this.error}</p>

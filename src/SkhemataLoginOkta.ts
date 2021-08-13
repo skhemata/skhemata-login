@@ -14,6 +14,7 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import { SkhemataLoginOktaStyle } from './style/SkhemataLoginOktaStyle';
 import { translationEngDefault } from './translation/SkhemataLoginOkta/eng';
+import { googleLogoSVG } from './assets/googleLogoSVG';
 
 const icons: any = {
   google: faGoogle,
@@ -103,8 +104,16 @@ export class SkhemataLoginOkta extends SkhemataBase {
                   class="button ${key}"
                   @click=${() => this.handleOkta(value.idpId)}
                 >
-                  <fa-icon class="icon" .icon=${icons[key]} size="2x"></fa-icon>
-                  <span>${this.getStr(`SkhemataLoginOkta.${key}`)}</span>
+                  <div class="column is-one-fifth">
+                    ${key === 'google'
+                      ? html` <img alt="G" src="${googleLogoSVG}" /> `
+                      : html`
+                          <fa-icon .icon=${icons[key]} size="2x"></fa-icon>
+                        `}
+                  </div>
+                  <div class="column">
+                    ${this.getStr(`SkhemataLoginOkta.${key}`)}
+                  </div>
                 </button>
               `
             )}
